@@ -269,7 +269,7 @@ pamauth(const char *user, const char *myname, int interactive, int nopass, int p
 
 #ifdef USE_TIMESTAMP
 	if (persist)
-		fd = timestamp_open(&valid, 5 * 60);
+		fd = timestamp_open(&valid, TIMESTAMP_TIMEOUT);
 	if (fd != -1 && valid == 1)
 		nopass = 1;
 #endif
@@ -346,7 +346,7 @@ pamauth(const char *user, const char *myname, int interactive, int nopass, int p
 
 #ifdef USE_TIMESTAMP
 	if (fd != -1) {
-		timestamp_set(fd, 5 * 60);
+		timestamp_set(fd, TIMESTAMP_TIMEOUT);
 		close(fd);
 	}
 #endif

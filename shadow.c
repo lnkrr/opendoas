@@ -55,7 +55,7 @@ shadowauth(const char *myname, int persist)
 	int valid = 0;
 
 	if (persist)
-		fd = timestamp_open(&valid, 5 * 60);
+		fd = timestamp_open(&valid, TIMESTAMP_TIMEOUT);
 	if (fd != -1 && valid == 1)
 		goto good;
 #else
@@ -108,7 +108,7 @@ shadowauth(const char *myname, int persist)
 #ifdef USE_TIMESTAMP
 good:
 	if (fd != -1) {
-		timestamp_set(fd, 5 * 60);
+		timestamp_set(fd, TIMESTAMP_TIMEOUT);
 		close(fd);
 	}
 #endif

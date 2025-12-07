@@ -29,6 +29,7 @@ usage: configure [options]
   --with-timestamp       enable timestamp support
 
   --retries=NUM          set number of retries (default 3)
+  --timeout=NUM          set timeout in seconds (default 300)
 
   --uid-max=NUM          set UID_MAX (default 65535)
   --gid-max=NUM          set GID_MAX (default 65535)
@@ -41,6 +42,7 @@ EOF
 # defaults
 WITHOUT_TIMESTAMP=yes
 RETRIES=3
+TIMEOUT=300
 UID_MAX=65535
 GID_MAX=65535
 
@@ -66,6 +68,7 @@ for x; do
 	--with-timestamp) WITHOUT_TIMESTAMP= ;;
 	--without-timestamp) WITHOUT_TIMESTAMP=yes ;;
 	--retries) RETRIES=$var ;;
+	--timeout) TIMEOUT=$var ;;
 	--uid-max) UID_MAX=$var ;;
 	--gid-max) UID_MAX=$var ;;
 	--help|-h) usage ;;
@@ -131,6 +134,7 @@ case "$OS" in
 esac
 
 printf '#define AUTH_RETRIES %s\n' "$RETRIES" >>$CONFIG_H
+printf '#define TIMESTAMP_TIMEOUT %s\n' "$TIMEOUT" >>$CONFIG_H
 
 : ${PREFIX:=/usr/local}
 : ${EPREFIX:=${PREFIX}}
