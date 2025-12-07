@@ -33,7 +33,7 @@ extern const char *formerpath;
 
 struct passwd;
 
-char **prepenv(const struct rule *, const struct passwd *,
+char **prepenv(int eflag, const struct rule *, const struct passwd *,
     const struct passwd *);
 
 #define PERMIT	1

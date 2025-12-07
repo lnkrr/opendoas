@@ -42,7 +42,7 @@
 static void __dead
 usage(void)
 {
-	fprintf(stderr, "usage: doas [-Lns] [-C config] [-u user]"
+	fprintf(stderr, "usage: doas [-LEns] [-C config] [-u user]"
 	    " command [args]\n");
 	exit(1);
 }
@@ -254,6 +254,7 @@ main(int argc, char **argv)
 	gid_t groups[NGROUPS_MAX + 1];
 	int ngroups;
 	int i, ch, rv;
+	int eflag = 0;
 	int sflag = 0;
 	int nflag = 0;
 	char cwdpath[PATH_MAX];
@@ -266,7 +267,7 @@ main(int argc, char **argv)
 
 	uid = getuid();
 
-	while ((ch = getopt(argc, argv, "+C:Lnsu:")) != -1) {
+	while ((ch = getopt(argc, argv, "+C:LEnsu:")) != -1) {
 		switch (ch) {
 		case 'C':
 			confpath = optarg;
@@ -280,6 +281,9 @@ main(int argc, char **argv)
 		case 'u':
 			if (parseuid(optarg, &target) != 0)
 				errx(1, "unknown user");
+			break;
+		case 'E':
+			eflag = 1;
 			break;
 		case 'n':
 			nflag = 1;
@@ -412,7 +416,7 @@ main(int argc, char **argv)
 		    mypw->pw_name, cmdline, targpw->pw_name, cwd);
 	}
 
-	envp = prepenv(rule, mypw, targpw);
+	envp = prepenv(eflag, rule, mypw, targpw);
 
 	/* setusercontext set path for the next process, so reset it for us */
 	if (rule->cmd) {

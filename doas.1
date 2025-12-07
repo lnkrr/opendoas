@@ -21,7 +21,7 @@
 .Nd execute commands as another user
 .Sh SYNOPSIS
 .Nm doas
-.Op Fl Lns
+.Op Fl LEns
 .Op Fl C Ar config
 .Op Fl u Ar user
 .Ar command
@@ -88,6 +88,8 @@ No command is executed.
 Clear any persisted authentications from previous invocations,
 then immediately exit.
 No command is executed.
+.It Fl E
+Preserve existing environment variables.
 .It Fl n
 Non interactive mode, fail if the matching rule doesn't have the
 .Ic nopass

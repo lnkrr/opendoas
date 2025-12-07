@@ -87,7 +87,7 @@ addnode(struct env *env, const char *key, const char *value)
 }
 
 static struct env *
-createenv(const struct rule *rule, const struct passwd *mypw,
+createenv(int eflag, const struct rule *rule, const struct passwd *mypw,
     const struct passwd *targpw)
 {
 	static const char *copyset[] = {
@@ -112,7 +112,7 @@ createenv(const struct rule *rule, const struct passwd *mypw,
 
 	fillenv(env, copyset);
 
-	if (rule->options & KEEPENV) {
+	if (eflag || (rule->options & KEEPENV)) {
 		extern char **environ;
 
 		for (i = 0; environ[i] != NULL; i++) {
@@ -225,12 +225,12 @@ fillenv(struct env *env, const char **envlist)
 }
 
 char **
-prepenv(const struct rule *rule, const struct passwd *mypw,
+prepenv(int eflag, const struct rule *rule, const struct passwd *mypw,
     const struct passwd *targpw)
 {
 	struct env *env;
 
-	env = createenv(rule, mypw, targpw);
+	env = createenv(eflag, rule, mypw, targpw);
 	if (rule->envlist)
 		fillenv(env, rule->envlist);
 
