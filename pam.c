@@ -283,7 +283,7 @@ pamauth(const char *user, const char *myname, int interactive, int nopass, int p
 		if (gethostname(host, sizeof(host)))
 			snprintf(host, sizeof(host), "?");
 		snprintf(doas_prompt, sizeof(doas_prompt),
-		    "\rdoas (%.32s@%.32s) password: ", myname, host);
+		    "\r" PROMPTFMT, myname, host);
 
 		/* authenticate */
 		for (i = 0; i < AUTH_RETRIES; i++) {

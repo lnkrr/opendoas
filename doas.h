@@ -44,6 +44,8 @@ char **prepenv(int eflag, const struct rule *, const struct passwd *,
 #define PERSIST		0x4
 #define NOLOG		0x8
 
+#define PROMPTFMT "[doas] password: _ "
+
 #ifdef USE_PAM
 void pamauth(const char *, const char *, int, int, int);
 #endif

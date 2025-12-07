@@ -80,7 +80,8 @@ shadowauth(const char *myname, int persist)
 		snprintf(host, sizeof(host), "?");
 
 	snprintf(cbuf, sizeof(cbuf),
-			"\rdoas (%.32s@%.32s) password: ", myname, host);
+			"\r" PROMPTFMT, myname, host);
+
 	challenge = cbuf;
 
 	for (i = 0; i < AUTH_RETRIES; i++) {
