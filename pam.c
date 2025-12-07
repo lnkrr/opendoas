@@ -234,7 +234,7 @@ pamauth(const char *user, const char *myname, int interactive, int nopass, int p
 	};
 	const char *ttydev;
 	pid_t child;
-	int ret, sess = 0, cred = 0;
+	int i, ret, sess = 0, cred = 0;
 
 #ifdef USE_TIMESTAMP
 	int fd = -1;
@@ -286,11 +286,17 @@ pamauth(const char *user, const char *myname, int interactive, int nopass, int p
 		    "\rdoas (%.32s@%.32s) password: ", myname, host);
 
 		/* authenticate */
-		ret = pam_authenticate(pamh, 0);
-		if (ret != PAM_SUCCESS) {
-			pamcleanup(ret, sess, cred);
-			syslog(LOG_AUTHPRIV | LOG_NOTICE, "failed auth for %s", myname);
-			errx(1, "Authentication failed");
+		for (i = 0; i < AUTH_RETRIES; i++) {
+			ret = pam_authenticate(pamh, 0);
+			if (ret != PAM_SUCCESS) {
+				if (i == AUTH_RETRIES - 1) {
+					pamcleanup(ret, sess, cred);
+					syslog(LOG_AUTHPRIV | LOG_NOTICE, "failed auth for %s", myname);
+					errx(1, "Authentication failed")
+				}
+
+				warnx("Authentication failed")
+			}
 		}
 	}
 

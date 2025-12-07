@@ -28,6 +28,8 @@ usage: configure [options]
 
   --with-timestamp       enable timestamp support
 
+  --retries=NUM          set number of retries (default 3)
+
   --uid-max=NUM          set UID_MAX (default 65535)
   --gid-max=NUM          set GID_MAX (default 65535)
 
@@ -38,6 +40,7 @@ EOF
 
 # defaults
 WITHOUT_TIMESTAMP=yes
+RETRIES=3
 UID_MAX=65535
 GID_MAX=65535
 
@@ -62,6 +65,7 @@ for x; do
 	--without-shadow) WITHOUT_SHADOW=yes ;;
 	--with-timestamp) WITHOUT_TIMESTAMP= ;;
 	--without-timestamp) WITHOUT_TIMESTAMP=yes ;;
+	--retries) RETRIES=$var ;;
 	--uid-max) UID_MAX=$var ;;
 	--gid-max) UID_MAX=$var ;;
 	--help|-h) usage ;;
@@ -125,6 +129,8 @@ case "$OS" in
 		: ${BINGRP:=wheel}
 		;;
 esac
+
+printf '#define AUTH_RETRIES %s\n' "$RETRIES" >>$CONFIG_H
 
 : ${PREFIX:=/usr/local}
 : ${EPREFIX:=${PREFIX}}
