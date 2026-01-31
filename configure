@@ -70,7 +70,7 @@ for x; do
 	--retries) RETRIES=$var ;;
 	--timeout) TIMEOUT=$var ;;
 	--uid-max) UID_MAX=$var ;;
-	--gid-max) UID_MAX=$var ;;
+	--gid-max) GID_MAX=$var ;;
 	--help|-h) usage ;;
 	*) die "Error: unknown option $opt" ;;
 	esac
